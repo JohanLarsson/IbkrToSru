@@ -1,2 +1,2 @@
-dotnet publish ./Snappy/Snappy.csproj -c Release -o ./Snappy/bin
+dotnet publish ./IbkrToSru/IbkrToSru.csproj -c Release -o ./IbkrToSru/bin
 # @pause
