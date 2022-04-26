@@ -1,34 +1,17 @@
 ﻿namespace IbkrToSru;
 
-using System;
 using System.Collections.Immutable;
 using System.IO;
 
 public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 {
-    private string personNumber = "19790305-4524";
-    private ExchangeRate exchangeRate = new("USD", 8.5815);
     private string csvFile;
-    private string sruFile;
-    private int year = DateTime.Now.Year - 1;
+    private string personNumber = "19790305-4524";
+    private double exchangeRate = 8.5815;
+    private int year = 2021;
     private ImmutableArray<Execution> executions;
 
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
-
-    public string PersonNumber
-    {
-        get => this.personNumber;
-        set
-        {
-            if (value == this.personNumber)
-            {
-                return;
-            }
-
-            this.personNumber = value;
-            this.OnPropertyChanged();
-        }
-    }
 
     public string CsvFile
     {
@@ -42,21 +25,26 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.csvFile = value;
             this.OnPropertyChanged();
+            this.Executions =
+                File.Exists(value)
+                    ? Csv.ReadExecutions(File.ReadAllText(value))
+                    : ImmutableArray<Execution>.Empty;
         }
     }
 
-    public string SruFile
+    public string PersonNumber
     {
-        get => this.sruFile;
+        get => this.personNumber;
         set
         {
-            if (value == this.sruFile)
+            if (value == this.personNumber)
             {
                 return;
             }
 
-            this.sruFile = value;
+            this.personNumber = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.SruText));
         }
     }
 
@@ -72,21 +60,23 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.year = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.SruText));
         }
     }
 
-    public ExchangeRate ExchangeRate
+    public double ExchangeRate
     {
         get => this.exchangeRate;
         set
         {
-            if (ReferenceEquals(value, this.exchangeRate))
+            if (value == this.exchangeRate)
             {
                 return;
             }
 
             this.exchangeRate = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.SruText));
         }
     }
 
@@ -102,13 +92,11 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.executions = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.SruText));
         }
     }
 
-    public void Export()
-    {
-        File.WriteAllText(this.sruFile, Sru.Create(this.executions, this.year, this.exchangeRate, this.personNumber));
-    }
+    public string SruText => Sru.Create(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
 
     private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
     {

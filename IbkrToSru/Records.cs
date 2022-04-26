@@ -9,7 +9,7 @@ public record ExchangeRate(
 {
     public double ToSek(double amount) => amount * this.Rate;
 
-    public string ToSekText(double amount) => (amount * this.Rate).ToString("0.##", CultureInfo.GetCultureInfo("sv-SE"));
+    public string ToSekText(double amount) => Math.Round(amount * this.Rate).ToString(CultureInfo.InvariantCulture);
 }
 
 public record Execution(

@@ -102,6 +102,12 @@ public static class Csv
 
                 return true;
             }
+            else if (csv[i] == '\n')
+            {
+                line = csv[position..i];
+                position = i + 1;
+                return true;
+            }
         }
 
         line = csv[position..];

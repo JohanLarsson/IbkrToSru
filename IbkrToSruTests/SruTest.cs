@@ -27,6 +27,22 @@ public static class SruTest
             "#UPPGIFT 3105 2604,61\r\n" +
             "#BLANKETTSLUT\r\n" +
             "#FIL_SLUT\r\n"),
+        new(
+            new[]
+            {
+                new Execution("USD", "NAKD", new DateTime(2021, 10, 14, 09, 41, 55), 4091, 0.69375407, -2838.1479, -30.6825, 0),
+                new Execution("USD", "NAKD", new DateTime(2021, 10, 18, 09, 30, 01), -4091, 0.6616, 2706.6056, -28.377888689, -188.868845),
+            },
+            "#BLANKETT K4-2021P4\r\n" +
+            "#IDENTITET 197903054524 20220426 133009\r\n" +
+            "#UPPGIFT 3100 50\r\n" +
+            "#UPPGIFT 3101 NAKD\r\n" +
+            "#UPPGIFT 3102 14502,74\r\n" +
+            "#UPPGIFT 3103 17107,35\r\n" +
+            "#UPPGIFT 3104 0\r\n" +
+            "#UPPGIFT 3105 2604,61\r\n" +
+            "#BLANKETTSLUT\r\n" +
+            "#FIL_SLUT\r\n"),
     };
 
     [TestCaseSource(nameof(Cases))]

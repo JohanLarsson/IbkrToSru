@@ -8,6 +8,11 @@ public static class Sru
 {
     public static string Create(ImmutableArray<Execution> executions, int year, ExchangeRate exchangeRate, string personNumber, DateTime now = default)
     {
+        if (executions.IsDefaultOrEmpty)
+        {
+            return string.Empty;
+        }
+
         var builder = new StringBuilder();
         if (now == default)
         {
@@ -28,8 +33,17 @@ public static class Sru
                 builder.AppendLine($"#IDENTITET {personNumber.Replace("-", string.Empty)} {now.ToString("yyyyMMdd HHmmss")}");
                 builder.AppendLine($"#UPPGIFT 3100 {Math.Abs(execution.Quantity)}");
                 builder.AppendLine($"#UPPGIFT 3101 {execution.Symbol}");
-                builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Proceeds)}");
-                builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(execution.Proceeds - execution.Pnl)}");
+                if (execution.Proceeds < 0)
+                {
+                    builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Pnl - execution.Proceeds)}");
+                    builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(-execution.Proceeds)}");
+                }
+                else
+                {
+                    builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Proceeds)}");
+                    builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(execution.Proceeds - execution.Pnl)}");
+                }
+
                 if (execution.Pnl > 0)
                 {
                     builder.AppendLine($"#UPPGIFT 3104 {exchangeRate.ToSekText(execution.Pnl)}");
