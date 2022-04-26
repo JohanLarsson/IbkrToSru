@@ -36,6 +36,8 @@
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Växelkurs" />
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ExchangeRate}" />
+
+            <Button Grid.Row="3" Grid.Column="1" Content="Spara" Click="ButtonBase_OnClick"/>
         </Grid>
         <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SruText, Mode=OneWay}" />
     </Grid>
