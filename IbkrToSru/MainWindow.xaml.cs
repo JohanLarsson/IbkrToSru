@@ -11,7 +11,7 @@ public partial class MainWindow : Window
         this.InitializeComponent();
     }
 
-    private void OnOpenFileClick(object sender, RoutedEventArgs e)
+    private void OnOpenClick(object sender, RoutedEventArgs e)
     {
         var dialog = new OpenFileDialog
         {
@@ -24,7 +24,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    private void OnSaveClick(object sender, RoutedEventArgs e)
     {
         var dialog = new SaveFileDialog()
         {
