@@ -6,7 +6,7 @@ using System.IO;
 public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 {
     private string csvFile;
-    private string personNumber = "19790305-4524";
+    private string personNumber = "personnummer";
     private double exchangeRate = 8.5815;
     private int year = 2021;
     private ImmutableArray<Execution> executions;
