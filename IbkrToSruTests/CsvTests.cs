@@ -1,7 +1,6 @@
-namespace IbkrToSruTests;
+﻿namespace IbkrToSruTests;
 
 using System;
-
 using IbkrToSru;
 
 using NUnit.Framework;

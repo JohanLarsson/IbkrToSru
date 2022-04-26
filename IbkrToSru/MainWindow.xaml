@@ -6,7 +6,26 @@
         xmlns:local="clr-namespace:IbkrToSru"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"  />
+        </Grid.ColumnDefinitions>
 
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Personnummer" />
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding PersonNumber}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Växelkurs" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ExchangeRate}" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Csv" />
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CsvFile}" />
     </Grid>
 </Window>

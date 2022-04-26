@@ -27,13 +27,13 @@ public static class Csv
             var position = 0;
             while (ReadLine(csv, out var line, ref position))
             {
-                if (TryReadExecution(line, terminator) is { } execution)
+                if (TryRead(line, terminator) is { } execution)
                 {
                     yield return execution;
                 }
             }
 
-            static Execution? TryReadExecution(ReadOnlySpan<char> line, char terminator)
+            static Execution? TryRead(ReadOnlySpan<char> line, char terminator)
             {
                 // Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
                 // Trades,Data,Order,Stocks,USD,APPS,\"2021-10-05, 10:46:40\",13,74.06,73.56,-962.78,-1,963.78,0,-6.5,O;P
@@ -43,6 +43,7 @@ public static class Csv
                     SkipKnown(line, "Order", terminator, ref position) &&
                     SkipKnown(line, "Stocks", terminator, ref position))
                 {
+                    // ReSharper disable UnusedVariable
                     if (ReadString(line, terminator, out var currency, ref position) &&
                         ReadString(line, terminator, out var symbol, ref position) &&
                         ReadTime(line, terminator, out var time, ref position) &&
@@ -52,21 +53,22 @@ public static class Csv
                         ReadDouble(line, terminator, out var proceeds, ref position) &&
                         ReadDouble(line, terminator, out var fee, ref position) &&
                         ReadDouble(line, terminator, out var basis, ref position) &&
-                        ReadDouble(line, terminator, out var pnl, ref position)&&
+                        ReadDouble(line, terminator, out var pnl, ref position) &&
                         ReadString(line, terminator, out var code, ref position))
                     {
+                        // ReSharper restore UnusedVariable
                         return new Execution(
-                            currency: currency,
-                            symbol: symbol,
-                            time: time,
-                            quantity: (int)quantity,
-                            price: price,
-                            proceeds: proceeds,
-                            fee: fee,
-                            pnl: pnl);
+                            Currency: currency,
+                            Symbol: symbol,
+                            Time: time,
+                            Quantity: (int)quantity,
+                            Price: price,
+                            Proceeds: proceeds,
+                            Fee: fee,
+                            Pnl: pnl);
                     }
 
-                    throw new FormatException("Error reading symbol");
+                    throw new FormatException("Error reading execution");
                 }
 
                 return null;
