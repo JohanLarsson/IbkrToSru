@@ -21,10 +21,10 @@ public static class SruTest
             "#IDENTITET 197903054524 20220426 133009\r\n" +
             "#UPPGIFT 3100 50\r\n" +
             "#UPPGIFT 3101 AMC\r\n" +
-            "#UPPGIFT 3102 14502,74\r\n" +
-            "#UPPGIFT 3103 17107,35\r\n" +
+            "#UPPGIFT 3102 14503\r\n" +
+            "#UPPGIFT 3103 17107\r\n" +
             "#UPPGIFT 3104 0\r\n" +
-            "#UPPGIFT 3105 2604,61\r\n" +
+            "#UPPGIFT 3105 2605\r\n" +
             "#BLANKETTSLUT\r\n" +
             "#FIL_SLUT\r\n"),
         new(
@@ -35,12 +35,27 @@ public static class SruTest
             },
             "#BLANKETT K4-2021P4\r\n" +
             "#IDENTITET 197903054524 20220426 133009\r\n" +
-            "#UPPGIFT 3100 50\r\n" +
+            "#UPPGIFT 3100 4091\r\n" +
             "#UPPGIFT 3101 NAKD\r\n" +
-            "#UPPGIFT 3102 14502,74\r\n" +
-            "#UPPGIFT 3103 17107,35\r\n" +
+            "#UPPGIFT 3102 23227\r\n" +
+            "#UPPGIFT 3103 24848\r\n" +
             "#UPPGIFT 3104 0\r\n" +
-            "#UPPGIFT 3105 2604,61\r\n" +
+            "#UPPGIFT 3105 1621\r\n" +
+            "#BLANKETTSLUT\r\n" +
+            "#FIL_SLUT\r\n"),
+        new(
+            new[]
+            {
+                new Execution("USD", "NAKD", new DateTime(2021, 10, 18, 09, 40, 34), 836, 0.659976077, -551.74, -4.1799999999999997d, -8.4556789999999999d),
+            },
+            "#BLANKETT K4-2021P4\r\n" +
+            "#IDENTITET 197903054524 20220426 133009\r\n" +
+            "#UPPGIFT 3100 836\r\n" +
+            "#UPPGIFT 3101 NAKD\r\n" +
+            "#UPPGIFT 3102 4662\r\n" +
+            "#UPPGIFT 3103 4735\r\n" +
+            "#UPPGIFT 3104 0\r\n" +
+            "#UPPGIFT 3105 73\r\n" +
             "#BLANKETTSLUT\r\n" +
             "#FIL_SLUT\r\n"),
     };
