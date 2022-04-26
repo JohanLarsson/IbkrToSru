@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IbkrToSru"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="600">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*"  />
         </Grid.ColumnDefinitions>
-        <Grid>
+        <Grid Margin="2,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Csv" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="csv" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CsvFile}" />
             <Button Grid.Row="0" Grid.Column="2" Content="..." Click="OnOpenClick" />
 
@@ -38,11 +38,16 @@
             <TextBlock Grid.Row="2" Grid.Column="0" Text="personnummer" />
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PersonNumber}" />
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="växelkurs" />
+            <TextBlock Grid.Row="3" Grid.Column="0">           
+                <Hyperlink NavigateUri="https://www.riksbank.se/sv/statistik/sok-rantor--valutakurser/valutakurser-till-deklarationen/" RequestNavigate="OnRequestNavigate">
+                    växelkurs
+                </Hyperlink>
+            </TextBlock>
+
             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ExchangeRate}" />
 
             <Button Grid.Row="4" Grid.Column="1" Content="spara" Click="OnSaveClick"/>
         </Grid>
-        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SruText, Mode=OneWay}" />
+        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SruText, Mode=OneWay}" VerticalScrollBarVisibility="Auto" />
     </Grid>
 </Window>

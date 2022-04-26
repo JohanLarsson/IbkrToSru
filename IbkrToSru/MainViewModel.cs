@@ -5,7 +5,7 @@ using System.IO;
 
 public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 {
-    private string csvFile;
+    private string? csvFile;
     private string personNumber = "personnummer";
     private double exchangeRate = 8.5815;
     private int year = 2021;
@@ -13,7 +13,7 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
 
-    public string CsvFile
+    public string? CsvFile
     {
         get => this.csvFile;
         set

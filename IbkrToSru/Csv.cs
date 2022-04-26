@@ -43,20 +43,18 @@ public static class Csv
                     SkipKnown(line, "Order", terminator, ref position) &&
                     SkipKnown(line, "Stocks", terminator, ref position))
                 {
-                    // ReSharper disable UnusedVariable
                     if (ReadString(line, terminator, out var currency, ref position) &&
                         ReadString(line, terminator, out var symbol, ref position) &&
                         ReadTime(line, terminator, out var time, ref position) &&
                         ReadDouble(line, terminator, out var quantity, ref position) &&
                         ReadDouble(line, terminator, out var price, ref position) &&
-                        ReadDouble(line, terminator, out var cPrice, ref position) &&
+                        ReadDouble(line, terminator, out _, ref position) &&
                         ReadDouble(line, terminator, out var proceeds, ref position) &&
                         ReadDouble(line, terminator, out var fee, ref position) &&
-                        ReadDouble(line, terminator, out var basis, ref position) &&
+                        ReadDouble(line, terminator, out _, ref position) &&
                         ReadDouble(line, terminator, out var pnl, ref position) &&
-                        ReadString(line, terminator, out var code, ref position))
+                        ReadString(line, terminator, out _, ref position))
                     {
-                        // ReSharper restore UnusedVariable
                         return new Execution(
                             Currency: currency,
                             Symbol: symbol,
@@ -251,31 +249,6 @@ public static class Csv
         }
 
         result = default;
-        return false;
-    }
-
-    private static bool SkipValue(ReadOnlySpan<char> csv, char terminator, ref int position)
-    {
-        if (ReadQuoted(csv, terminator, out _, ref position))
-        {
-            return true;
-        }
-
-        for (var i = position; i < csv.Length; i++)
-        {
-            if (csv[i] == terminator ||
-                i == csv.Length - 1)
-            {
-                position = i + 1;
-                if (terminator == ' ')
-                {
-                    Skip(csv, ' ', ref position);
-                }
-
-                return true;
-            }
-        }
-
         return false;
     }
 
