@@ -20,6 +20,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -31,13 +32,16 @@
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CsvFile}" />
             <Button Grid.Row="0" Grid.Column="2" Content="..." Click="OnOpenFileClick" />
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Personnummer" />
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PersonNumber}" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="year" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Year}" />
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Växelkurs" />
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ExchangeRate}" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="personnummer" />
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PersonNumber}" />
 
-            <Button Grid.Row="3" Grid.Column="1" Content="Spara" Click="ButtonBase_OnClick"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="växelkurs" />
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ExchangeRate}" />
+
+            <Button Grid.Row="4" Grid.Column="1" Content="spara" Click="ButtonBase_OnClick"/>
         </Grid>
         <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SruText, Mode=OneWay}" />
     </Grid>
