@@ -174,32 +174,32 @@ public static class Csv
         }
 
         throw new FormatException("Could not read value at position");
-    }
 
-    private static bool ReadQuoted(ReadOnlySpan<char> csv, char terminator, out ReadOnlySpan<char> inner, ref int position)
-    {
-        if (position < csv.Length &&
-            csv[position] == '"')
+        static bool ReadQuoted(ReadOnlySpan<char> csv, char terminator, out ReadOnlySpan<char> inner, ref int position)
         {
-            for (var i = position + 1; i < csv.Length; i++)
+            if (position < csv.Length &&
+                csv[position] == '"')
             {
-                if (csv[i] == '"' &&
-                    i < csv.Length - 1 &&
-                    csv[i + 1] == terminator)
+                for (var i = position + 1; i < csv.Length; i++)
                 {
-                    inner = csv[(position + 1)..i];
-                    position = i + 2;
-                    if (terminator == ' ')
+                    if (csv[i] == '"' &&
+                        i < csv.Length - 1 &&
+                        csv[i + 1] == terminator)
                     {
-                        Skip(csv, ' ', ref position);
-                    }
+                        inner = csv[(position + 1)..i];
+                        position = i + 2;
+                        if (terminator == ' ')
+                        {
+                            Skip(csv, ' ', ref position);
+                        }
 
-                    return true;
+                        return true;
+                    }
                 }
             }
-        }
 
-        inner = default;
-        return false;
+            inner = default;
+            return false;
+        }
     }
 }
