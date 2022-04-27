@@ -41,6 +41,15 @@ public static class CsvTests
                 new Execution("USD", "NAKD", new DateTime(2021, 10, 18, 09, 30, 01), -836, 0.6616, 553.0976, -5.633280798, -1.733843d),
                 new Execution("USD", "NAKD", new DateTime(2021, 10, 18, 09, 40, 34), 836, 0.659976077, -551.74, -4.1799999999999997d, -8.4556789999999999d),
             }),
+        new(
+            "Trades,Data,Order,Stocks,USD,AVGO,\"2021-12-10, 09:36:08\",-10,624.83,631.68,6248.3,-1.03305633,-6247.26694367,0,-68.5,O\r\n" +
+            "Trades,Data,Order,Stocks,USD,AVGO,\"2021-12-10, 09:39:30\",10,632.37,631.68,-6323.7,-1,6247.266944,-77.433056,-6.9,C\r\n" +
+            "Trades,SubTotal,,Stocks,USD,AVGO,,0,,,-75.4,-2.03305633,0.00000033,-77.433056,-75.4,",
+            new[]
+            {
+                new Execution("USD", "AVGO", new DateTime(2021, 12, 10, 09, 36, 08), -10, 624.83, 6248.30, -1.03305633, 0),
+                new Execution("USD", "AVGO", new DateTime(2021, 12, 10, 09, 39, 30), 10, 632.37, -6323.7, -1, -77.433055999999993d),
+            }),
     };
 
     private static readonly TestCaseData[] TradorvateCases =
