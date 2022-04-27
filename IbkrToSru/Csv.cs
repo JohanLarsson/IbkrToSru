@@ -87,18 +87,15 @@ public static class Csv
         {
             switch (csv[i])
             {
+                case '\r'
+                    when i < csv.Length - 1 &&
+                         csv[i + 1] == '\n':
+                    line = csv[position..i];
+                    position = i + 2;
+                    return true;
                 case '\r':
                     line = csv[position..i];
-                    if (i < csv.Length - 1 &&
-                        csv[i + 1] == '\n')
-                    {
-                        position = i + 2;
-                    }
-                    else
-                    {
-                        position = i + 1;
-                    }
-
+                    position = i + 1;
                     return true;
                 case '\n':
                     line = csv[position..i];
