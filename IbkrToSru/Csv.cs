@@ -85,26 +85,27 @@ public static class Csv
 
         for (var i = position; i < csv.Length; i++)
         {
-            if (csv[i] == '\r')
+            switch (csv[i])
             {
-                line = csv[position..i];
-                if (i < csv.Length - 1 &&
-                    csv[i + 1] == '\n')
-                {
-                    position = i + 2;
-                }
-                else
-                {
-                    position = i + 1;
-                }
+                case '\r':
+                    {
+                        line = csv[position..i];
+                        if (i < csv.Length - 1 &&
+                            csv[i + 1] == '\n')
+                        {
+                            position = i + 2;
+                        }
+                        else
+                        {
+                            position = i + 1;
+                        }
 
-                return true;
-            }
-            else if (csv[i] == '\n')
-            {
-                line = csv[position..i];
-                position = i + 1;
-                return true;
+                        return true;
+                    }
+                case '\n':
+                    line = csv[position..i];
+                    position = i + 1;
+                    return true;
             }
         }
 
@@ -113,157 +114,20 @@ public static class Csv
         return true;
     }
 
-    private static bool ReadDouble(ReadOnlySpan<char> csv, char terminator, out double result, ref int position)
-    {
-        var temp = position;
-        if (ReadQuoted(csv, terminator, out var inner, ref temp))
-        {
-            if (double.TryParse(inner, NumberStyles.Number, CultureInfo.InvariantCulture, out result))
-            {
-                position = temp;
-                return true;
-            }
-
-            result = default;
-            return false;
-        }
-
-        for (var i = position; i < csv.Length; i++)
-        {
-            if (csv[i] == terminator)
-            {
-                if (double.TryParse(csv[position..i], NumberStyles.Number, CultureInfo.InvariantCulture, out result))
-                {
-                    position = i + 1;
-                    if (terminator == ' ')
-                    {
-                        Skip(csv, ' ', ref position);
-                    }
-
-                    return true;
-                }
-
-                result = default;
-                return false;
-            }
-
-            if (i == csv.Length - 1)
-            {
-                if (double.TryParse(csv[position..], NumberStyles.Number, CultureInfo.InvariantCulture, out result))
-                {
-                    position = csv.Length;
-                    return true;
-                }
-            }
-        }
-
-        result = default;
-        return false;
-    }
+    private static bool ReadDouble(ReadOnlySpan<char> csv, char terminator, out double result, ref int position) =>
+        double.TryParse(ValueSpan(csv, terminator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);
 
     private static bool ReadString(ReadOnlySpan<char> csv, char terminator, [NotNullWhen(true)] out string? result, ref int position)
     {
-        var temp = position;
-        if (ReadQuoted(csv, terminator, out var inner, ref temp))
-        {
-            result = inner.ToString();
-            position = temp;
-            return true;
-        }
-
-        for (var i = position; i < csv.Length; i++)
-        {
-            if (csv[i] == terminator)
-            {
-                result = csv[position..i].ToString();
-                position = i + 1;
-                if (terminator == ' ')
-                {
-                    Skip(csv, ' ', ref position);
-                }
-
-                return true;
-            }
-
-            if (i == csv.Length - 1)
-            {
-                result = csv[position..].ToString();
-                return true;
-            }
-        }
-
-        result = default;
-        return false;
+        result = ValueSpan(csv, terminator, ref position).ToString();
+        return true;
     }
 
-    private static bool ReadTime(ReadOnlySpan<char> csv, char terminator, out DateTime result, ref int position)
-    {
-        var temp = position;
-        if (ReadQuoted(csv, terminator, out var inner, ref temp))
-        {
-            if (DateTime.TryParse(inner, out result))
-            {
-                position = temp;
-                return true;
-            }
+    private static bool ReadTime(ReadOnlySpan<char> csv, char terminator, out DateTime result, ref int position) =>
+        DateTime.TryParse(ValueSpan(csv, terminator, ref position), out result);
 
-            result = default;
-            return false;
-        }
-
-        for (var i = position + 1; i < csv.Length; i++)
-        {
-            if (csv[i] == terminator &&
-                i < csv.Length - 6 &&
-                csv[i + 3] == ':')
-            {
-                i += 3;
-                continue;
-            }
-
-            if (csv[i] == terminator)
-            {
-                if (DateTime.TryParse(csv[position..i], out result))
-                {
-                    position = i + 1;
-                    if (terminator == ' ')
-                    {
-                        Skip(csv, ' ', ref position);
-                    }
-
-                    return true;
-                }
-
-                result = default;
-                return false;
-            }
-
-            if (i == csv.Length - 1)
-            {
-                if (DateTime.TryParse(csv[position..], out result))
-                {
-                    position = csv.Length;
-                    return true;
-                }
-            }
-        }
-
-        result = default;
-        return false;
-    }
-
-    private static bool SkipKnown(ReadOnlySpan<char> csv, string text, char terminator, ref int position)
-    {
-        if (csv[position..].StartsWith(text, StringComparison.Ordinal) &&
-            position + text.Length < csv.Length &&
-            csv[position + text.Length] == terminator)
-        {
-            position += text.Length + 1;
-            return true;
-        }
-
-        return false;
-    }
+    private static bool SkipKnown(ReadOnlySpan<char> csv, string text, char terminator, ref int position) =>
+        ValueSpan(csv, terminator, ref position).Equals(text, StringComparison.Ordinal);
 
     private static void Skip(ReadOnlySpan<char> csv, char c, ref int position)
     {
@@ -276,6 +140,40 @@ public static class Csv
 
             position++;
         }
+    }
+
+    private static ReadOnlySpan<char> ValueSpan(ReadOnlySpan<char> csv, char terminator, ref int position)
+    {
+        var temp = position;
+        if (ReadQuoted(csv, terminator, out var inner, ref temp))
+        {
+            position = temp;
+            return inner;
+        }
+
+        for (var i = position; i < csv.Length; i++)
+        {
+            if (csv[i] == terminator)
+            {
+                var result = csv[position..i];
+                position = i + 1;
+                if (terminator == ' ')
+                {
+                    Skip(csv, ' ', ref position);
+                }
+
+                return result;
+            }
+
+            if (i == csv.Length - 1)
+            {
+                var result = csv[position..];
+                position = csv.Length;
+                return result;
+            }
+        }
+
+        throw new FormatException("Could not read value at position");
     }
 
     private static bool ReadQuoted(ReadOnlySpan<char> csv, char terminator, out ReadOnlySpan<char> inner, ref int position)
