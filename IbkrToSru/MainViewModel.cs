@@ -27,7 +27,7 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
             this.OnPropertyChanged();
             this.Executions =
                 File.Exists(value)
-                    ? Csv.ReadExecutions(File.ReadAllText(value))
+                    ? Csv.ReadIbkr(File.ReadAllText(value))
                     : ImmutableArray<Execution>.Empty;
         }
     }

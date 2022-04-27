@@ -8,7 +8,7 @@ using System.Globalization;
 
 public static class Csv
 {
-    public static ImmutableArray<Execution> ReadExecutions(string csv)
+    public static ImmutableArray<Execution> ReadIbkr(string csv)
     {
         if (csv.Contains("Trades,Data,Order,Stocks,", StringComparison.Ordinal))
         {
@@ -74,6 +74,56 @@ public static class Csv
         }
     }
 
+    public static ImmutableArray<BuyOrSell> ReadTradorvate(string csv)
+    {
+        if (csv.Contains("Timestamp,B/S,Quantity,Price,Contract,Product,Product Description", StringComparison.Ordinal))
+        {
+            return ReadExecutions(csv, ',').ToImmutableArray();
+        }
+
+        throw new FormatException("Expected comma or tab separated Tradorvate csv.");
+
+        static IEnumerable<BuyOrSell> ReadExecutions(string csv, char terminator)
+        {
+            var position = 0;
+            while (ReadLine(csv, out var line, ref position))
+            {
+                if (TryRead(line, terminator) is { } execution)
+                {
+                    yield return execution;
+                }
+            }
+
+            static BuyOrSell? TryRead(ReadOnlySpan<char> line, char terminator)
+            {
+                // Timestamp,B/S,Quantity,Price,Contract,Product,Product Description
+                // 2021-09-16 19:05, Sell,1,4449.00,ESZ1,ES,E-Mini S&P 500
+                var position = 0;
+                if (ReadTime(line, terminator, out var time, ref position))
+                {
+                    if (ReadString(line, terminator, out var action, ref position) &&
+                        ReadInt(line, terminator, out var quantity, ref position) &&
+                        ReadDouble(line, terminator, out var price, ref position) &&
+                        ReadString(line, terminator, out var symbol, ref position) &&
+                        ReadString(line, terminator, out _, ref position) &&
+                        ReadString(line, terminator, out _, ref position))
+                    {
+                        return action switch
+                        {
+                            " Buy" => new BuyOrSell("USD", symbol, time, quantity, price),
+                            " Sell" => new BuyOrSell("USD", symbol, time, -quantity, price),
+                            _ => throw new NotSupportedException("Unknown action expected buy or sell."),
+                        };
+                    }
+
+                    throw new FormatException("Error reading execution");
+                }
+
+                return null;
+            }
+        }
+    }
+
     private static bool ReadLine(ReadOnlySpan<char> csv, out ReadOnlySpan<char> line, ref int position)
     {
         if (csv.IsEmpty ||
@@ -108,6 +158,9 @@ public static class Csv
         position = csv.Length;
         return true;
     }
+
+    private static bool ReadInt(ReadOnlySpan<char> csv, char terminator, out int result, ref int position) =>
+        int.TryParse(ValueSpan(csv, terminator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);
 
     private static bool ReadDouble(ReadOnlySpan<char> csv, char terminator, out double result, ref int position) =>
         double.TryParse(ValueSpan(csv, terminator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);

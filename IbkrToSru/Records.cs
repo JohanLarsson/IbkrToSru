@@ -21,3 +21,10 @@ public record Execution(
     double Proceeds,
     double Fee,
     double Pnl);
+
+public record BuyOrSell(
+    string Currency,
+    string Symbol,
+    DateTime Time,
+    int Quantity,
+    double Price);

@@ -43,10 +43,23 @@ public static class CsvTests
             }),
     };
 
-    [TestCaseSource(nameof(Cases))]
-    public static void ReadExecutions(string csv, Execution[] expected)
+    private static readonly TestCaseData[] TradorvateCases =
     {
-        var actual = Csv.ReadExecutions(csv);
+        new(
+            "Timestamp,B/S,Quantity,Price,Contract,Product,Product Description\r\n" +
+            "2021-09-16 19:05, Sell,1,4449.00,ESZ1,ES,E-Mini S&P 500\r\n" +
+            "2021-09-16 19:20, Buy,1,4454.00,ESZ1,ES,E-Mini S&P 500\r\n",
+            new[]
+            {
+                new BuyOrSell("USD", "ESZ1", new DateTime(2021, 09, 16, 19, 05, 00), -1, 4449),
+                new BuyOrSell("USD", "ESZ1", new DateTime(2021, 09, 16, 19, 20, 00), 1, 4454),
+            }),
+    };
+
+    [TestCaseSource(nameof(Cases))]
+    public static void ReadIbkr(string csv, Execution[] expected)
+    {
+        var actual = Csv.ReadIbkr(csv);
         Assert.AreEqual(expected.Length, actual.Length);
         for (var i = 0; i < expected.Length; i++)
         {
@@ -58,6 +71,21 @@ public static class CsvTests
             Assert.AreEqual(expected[i].Proceeds, actual[i].Proceeds);
             Assert.AreEqual(expected[i].Fee, actual[i].Fee);
             Assert.AreEqual(expected[i].Pnl, actual[i].Pnl);
+        }
+    }
+
+    [TestCaseSource(nameof(TradorvateCases))]
+    public static void ReadTradorvate(string csv, BuyOrSell[] expected)
+    {
+        var actual = Csv.ReadTradorvate(csv);
+        Assert.AreEqual(expected.Length, actual.Length);
+        for (var i = 0; i < expected.Length; i++)
+        {
+            Assert.AreEqual(expected[i].Currency, actual[i].Currency);
+            Assert.AreEqual(expected[i].Symbol, actual[i].Symbol);
+            Assert.AreEqual(expected[i].Time, actual[i].Time);
+            Assert.AreEqual(expected[i].Quantity, actual[i].Quantity);
+            Assert.AreEqual(expected[i].Price, actual[i].Price);
         }
     }
 }
