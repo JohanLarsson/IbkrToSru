@@ -35,13 +35,13 @@ public static class Sru
                 builder.AppendLine($"#UPPGIFT 3101 {execution.Symbol}");
                 if (execution.Proceeds < 0)
                 {
-                    builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Pnl - execution.Proceeds)}");
-                    builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(-execution.Proceeds)}");
+                    builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Basis)}");
+                    builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(-execution.Proceeds - execution.Fee)}");
                 }
                 else
                 {
-                    builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Proceeds)}");
-                    builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(execution.Proceeds - execution.Pnl)}");
+                    builder.AppendLine($"#UPPGIFT 3102 {exchangeRate.ToSekText(execution.Proceeds + execution.Fee)}");
+                    builder.AppendLine($"#UPPGIFT 3103 {exchangeRate.ToSekText(-execution.Basis)}");
                 }
 
                 if (execution.Pnl > 0)
