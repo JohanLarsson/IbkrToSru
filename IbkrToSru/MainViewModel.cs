@@ -106,7 +106,27 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
         }
     }
 
-    public string SruText => Sru.Create(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
+    public string SruText
+    {
+        get
+        {
+            if (this.executions is { IsDefaultOrEmpty: true })
+            {
+                return "missing data";
+            }
+            else
+            {
+                try
+                {
+                    return Sru.Create(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+            }
+        }
+    }
 
     private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
     {
