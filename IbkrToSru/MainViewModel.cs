@@ -1,7 +1,9 @@
 ﻿namespace IbkrToSru;
 
+using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Windows;
 
 public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 {
@@ -25,10 +27,18 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.csvFile = value;
             this.OnPropertyChanged();
-            this.Executions =
-                File.Exists(value)
-                    ? Csv.ReadIbkr(File.ReadAllText(value))
-                    : ImmutableArray<Execution>.Empty;
+            try
+            {
+                this.Executions =
+                    File.Exists(value)
+                        ? Csv.ReadIbkr(File.ReadAllText(value))
+                        : ImmutableArray<Execution>.Empty;
+            }
+            catch (Exception e)
+            {
+                this.Executions = ImmutableArray<Execution>.Empty;
+                MessageBox.Show("Error parsing csv." + Environment.NewLine + e.Message);
+            }
         }
     }
 
