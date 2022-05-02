@@ -30,6 +30,22 @@ public static class SruTest
         new(
             new[]
             {
+                new Execution("USD", "AEHR", new DateTime(2021, 10, 06, 09, 45, 56), 80, 14.24, -1139.2, -1, 1140.2, 0),
+                new Execution("USD", "AEHR", new DateTime(2021, 10, 07, 13, 09, 43), -80, 16.13, 1290.4, -1.01610104, -1140.2, 149.183899),
+            },
+            "#BLANKETT K4-2021P4\r\n" +
+            "#IDENTITET 197903054524 20220426 133009\r\n" +
+            "#UPPGIFT 3100 80\r\n" +
+            "#UPPGIFT 3101 AEHR\r\n" +
+            "#UPPGIFT 3102 11065\r\n" +
+            "#UPPGIFT 3103 9785\r\n" +
+            "#UPPGIFT 3104 1280\r\n" +
+            "#UPPGIFT 3105 0\r\n" +
+            "#BLANKETTSLUT\r\n" +
+            "#FIL_SLUT\r\n"),
+        new(
+            new[]
+            {
                 new Execution("USD", "AVGO", new DateTime(2021, 12, 10, 09, 36, 08), -10, 624.83, 6248.30, -1.03305633, -6247.26694367, 0),
                 new Execution("USD", "AVGO", new DateTime(2021, 12, 10, 09, 39, 30), 10, 632.37, -6323.7, -1, 6247.266944, -77.433055999999993d),
             },

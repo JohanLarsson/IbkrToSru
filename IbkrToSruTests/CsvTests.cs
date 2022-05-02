@@ -20,6 +20,15 @@ public static class CsvTests
                 new Execution("USD", "AMC", new DateTime(2021, 11, 30, 11, 55, 26), -50, 33.8, 1690, -1.014569, -1992.5, -303.514569),
             }),
         new(
+            "Trades,Data,Order,Stocks,USD,AEHR,\"2021-10-06, 09:45:56\",80,14.24,13.61,-1139.2,-1,1140.2,0,-50.4,O\r\n" +
+            "Trades,Data,Order,Stocks,USD,AEHR,\"2021-10-07, 13:09:43\",-80,16.13,16.66,1290.4,-1.01610104,-1140.2,149.183899,-42.4,C\r\n" +
+            "Trades,SubTotal,,Stocks,USD,AEHR,,0,,,151.2,-2.01610104,0,149.183899,-92.8,\r\n",
+            new[]
+            {
+                new Execution("USD", "AEHR", new DateTime(2021, 10, 06, 09, 45, 56), 80, 14.24, -1139.2, -1, 1140.2, 0),
+                new Execution("USD", "AEHR", new DateTime(2021, 10, 07, 13, 09, 43), -80, 16.13, 1290.4, -1.01610104, -1140.2, 149.183899),
+            }),
+        new(
             "Trades,Data,Order,Stocks,USD,AMC,\"2021-11-23, 12:46:38\",50,39.83,39.16,-1991.5,-1,1992.5,0,-33.5,O\n" +
             "Trades,Data,Order,Stocks,USD,AMC,\"2021-11-30, 11:55:26\",-50,33.8,33.94,1690,-1.014569,-1992.5,-303.514569,-7,C\n",
             new[]
@@ -81,6 +90,7 @@ public static class CsvTests
             Assert.AreEqual(expected[i].Price, actual[i].Price);
             Assert.AreEqual(expected[i].Proceeds, actual[i].Proceeds);
             Assert.AreEqual(expected[i].Fee, actual[i].Fee);
+            Assert.AreEqual(expected[i].Basis, actual[i].Basis);
             Assert.AreEqual(expected[i].Pnl, actual[i].Pnl);
         }
     }
