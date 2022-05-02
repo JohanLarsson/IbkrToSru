@@ -20,6 +20,7 @@ public record Execution(
     double Price,
     double Proceeds,
     double Fee,
+    double Basis,
     double Pnl);
 
 public record BuyOrSell(

@@ -51,7 +51,7 @@ public static class Csv
                         ReadDouble(line, terminator, out _, ref position) &&
                         ReadDouble(line, terminator, out var proceeds, ref position) &&
                         ReadDouble(line, terminator, out var fee, ref position) &&
-                        ReadDouble(line, terminator, out _, ref position) &&
+                        ReadDouble(line, terminator, out var basis, ref position) &&
                         ReadDouble(line, terminator, out var pnl, ref position) &&
                         ReadString(line, terminator, out _, ref position))
                     {
@@ -63,6 +63,7 @@ public static class Csv
                             Price: price,
                             Proceeds: proceeds,
                             Fee: fee,
+                            Basis: basis,
                             Pnl: pnl);
                     }
 
