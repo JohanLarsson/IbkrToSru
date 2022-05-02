@@ -14,6 +14,12 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Authors>Johan Larsson</Authors>
+    <Description>App transforming IBKR csv to .sru that can be imported in Skatteverket</Description>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="PropertyChangedAnalyzers" Version="4.0.0" PrivateAssets="all" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406" PrivateAssets="all" />
