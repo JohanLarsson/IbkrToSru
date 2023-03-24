@@ -1,7 +1,7 @@
 # IbkrToSru
 App for generating .sru files from IBKR csv
 
-1. Exportera actibity report csv från [IBKR](https://www.interactivebrokers.co.uk/sso/Login?SERVICE=AM.LOGIN)
+1. Exportera activity report csv från [IBKR](https://www.interactivebrokers.co.uk/sso/Login?SERVICE=AM.LOGIN)
 2. Läs in csv genom att klicka på ...
 3. Ange år
 4. Ange genomsnittlig växelkurs för året från riksbanken https://www.riksbank.se/sv/statistik/sok-rantor--valutakurser/valutakurser-till-deklarationen/
