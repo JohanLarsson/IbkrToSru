@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     {
         var dialog = new SaveFileDialog()
         {
+            FileName = "BLANKETTER.sru",
             DefaultExt = ".sru",
             Filter = "SRU files|*.sru",
         };
