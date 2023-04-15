@@ -132,6 +132,8 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.exchangeRate = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.Win));
+            this.OnPropertyChanged(nameof(this.Loss));
             this.OnPropertyChanged(nameof(this.SruText));
         }
     }
