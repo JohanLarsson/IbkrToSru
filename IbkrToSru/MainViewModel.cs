@@ -8,9 +8,9 @@ using System.Windows;
 public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 {
     private string? csvFile;
-    private string personNumber = "personnummer";
-    private double exchangeRate = 8.5815;
-    private int year = 2021;
+    private string personNumber = "19790305-4524";
+    private double exchangeRate = 10.1245;
+    private int year = 2022;
     private ImmutableArray<Execution> executions;
 
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
