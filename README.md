@@ -10,6 +10,6 @@ App for generating .sru files from IBKR csv
 7. Importera BLANKETTER.sru i [mina sidor](https://www.skatteverket.se/)
 8. Kontrollera att uppgifterna stämmer
 
-![image](https://user-images.githubusercontent.com/1640096/165369340-85d82c2f-aee3-4338-bbd7-7c247b0693c9.png)
+![image](https://user-images.githubusercontent.com/1640096/232188438-b461b158-8187-472b-b8f1-462429120f7d.png)
 
 Endast stöd för handel i USD som det är nu.
