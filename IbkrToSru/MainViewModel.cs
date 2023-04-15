@@ -21,13 +21,19 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
         ? null
         : this.executions.Sum(x => x.Pnl);
 
-    public string? Win => this.Net is > 0 and var win
-        ? new ExchangeRate("USD", this.exchangeRate).ToSekText(win)
-        : "0";
+    public string Win => this.Net switch
+    {
+        > 0 and var win => new ExchangeRate("USD", this.exchangeRate).ToSekText(win),
+        <= 0 => "0",
+        _ => string.Empty,
+    };
 
-    public string? Loss => this.Net is < 0 and var win
-        ? new ExchangeRate("USD", this.exchangeRate).ToSekText(-win)
-        : "0";
+    public string? Loss => this.Net switch
+    {
+        < 0 and var win => new ExchangeRate("USD", this.exchangeRate).ToSekText(-win),
+        > 0 => "0",
+        _ => string.Empty,
+    };
 
     public string SruText
     {
