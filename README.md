@@ -13,3 +13,5 @@ App for generating .sru files from IBKR csv
 ![image](https://user-images.githubusercontent.com/1640096/232188438-b461b158-8187-472b-b8f1-462429120f7d.png)
 
 Endast stöd för handel i USD som det är nu.
+
+![image](https://user-images.githubusercontent.com/1640096/232244461-4c3233bc-1acb-493d-94e2-9e6369cb65cb.png)
