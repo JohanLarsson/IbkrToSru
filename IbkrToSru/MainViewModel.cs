@@ -3,10 +3,12 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 {
+    private const string PlaceHolderPersonNumber = "19790305-4524";
     private string? csvFile;
     private string personNumber = "19790305-4524";
     private double exchangeRate = 10.1245;
@@ -14,6 +16,44 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
     private ImmutableArray<Execution> executions;
 
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+
+    public double? Net => this.executions.IsDefaultOrEmpty
+        ? null
+        : this.executions.Sum(x => x.Pnl);
+
+    public string? Win => this.Net is > 0 and var win
+        ? new ExchangeRate("USD", this.exchangeRate).ToSekText(win)
+        : "0";
+
+    public string? Loss => this.Net is < 0 and var win
+        ? new ExchangeRate("USD", this.exchangeRate).ToSekText(-win)
+        : "0";
+
+    public string SruText
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(this.personNumber) ||
+                this.personNumber == PlaceHolderPersonNumber)
+            {
+                return "ange personnummer";
+            }
+
+            if (this.executions is { IsDefaultOrEmpty: true })
+            {
+                return "csv fil saknas";
+            }
+
+            try
+            {
+                return Sru.Create(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+    }
 
     public string? CsvFile
     {
@@ -102,29 +142,10 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.executions = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.Net));
+            this.OnPropertyChanged(nameof(this.Win));
+            this.OnPropertyChanged(nameof(this.Loss));
             this.OnPropertyChanged(nameof(this.SruText));
-        }
-    }
-
-    public string SruText
-    {
-        get
-        {
-            if (this.executions is { IsDefaultOrEmpty: true })
-            {
-                return "missing data";
-            }
-            else
-            {
-                try
-                {
-                    return Sru.Create(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
-                }
-                catch (Exception e)
-                {
-                    return e.Message;
-                }
-            }
         }
     }
 
