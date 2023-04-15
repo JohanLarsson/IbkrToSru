@@ -191,64 +191,54 @@ public static class Csv
         }
     }
 
-    private static ReadOnlySpan<char> ValueSpan(ReadOnlySpan<char> csv, char terminator, ref int position)
+    private static ReadOnlySpan<char> ValueSpan(ReadOnlySpan<char> csv, char separator, ref int position)
     {
-        var temp = position;
-        if (ReadQuoted(csv, terminator, out var inner, ref temp))
+        var start = position;
+        if (position < csv.Length &&
+            csv[position] == '"' &&
+            IndexOfEndQuote(csv, separator, start + 1, ref position) is var index)
         {
-            position = temp;
-            return inner;
+            return csv[(start + 1)..index];
         }
 
         for (var i = position; i < csv.Length; i++)
         {
-            if (csv[i] == terminator)
+            if (csv[i] == separator)
             {
-                var result = csv[position..i];
                 position = i + 1;
-                if (terminator == ' ')
-                {
-                    Skip(csv, ' ', ref position);
-                }
-
-                return result;
-            }
-
-            if (i == csv.Length - 1)
-            {
-                var result = csv[position..];
-                position = csv.Length;
-                return result;
+                return csv[start..i];
             }
         }
 
-        throw new FormatException("Could not read value at position");
+        position = csv.Length;
+        return csv[start..];
 
-        static bool ReadQuoted(ReadOnlySpan<char> csv, char terminator, out ReadOnlySpan<char> inner, ref int position)
+        static int IndexOfEndQuote(ReadOnlySpan<char> csv, char separator, int startAt, ref int position)
         {
-            if (position < csv.Length &&
-                csv[position] == '"')
+            for (var i = startAt; i < csv.Length; i++)
             {
-                for (var i = position + 1; i < csv.Length; i++)
+                if (csv[i] == '"')
                 {
-                    if (csv[i] == '"' &&
-                        i < csv.Length - 1 &&
-                        csv[i + 1] == terminator)
+                    position = i + 1;
+                    if (separator != ' ')
                     {
-                        inner = csv[(position + 1)..i];
-                        position = i + 2;
-                        if (terminator == ' ')
-                        {
-                            Skip(csv, ' ', ref position);
-                        }
+                        Skip(csv, ' ', ref position);
+                    }
 
-                        return true;
+                    if (position == csv.Length)
+                    {
+                        return i;
+                    }
+
+                    if (csv[position] == separator)
+                    {
+                        position++;
+                        return i;
                     }
                 }
             }
 
-            inner = default;
-            return false;
+            throw new FormatException("did not find end quote");
         }
     }
 }
