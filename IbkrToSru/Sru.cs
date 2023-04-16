@@ -69,7 +69,7 @@ public static class Sru
             var pnl = group.Sum(x => x.Pnl);
             items.Add(
                 new SruItem(
-                    Quantity: (int)Math.Abs(group.Sum(x => x.Quantity)),
+                    Quantity: (int)group.Sum(x => Math.Abs(x.Quantity)),
                     Symbol: group.Key,
                     Proceeds: exchangeRate.ToSek(group.Sum(x => x.Proceeds < 0 ? x.Basis : x.Proceeds + x.Fee)),
                     Basis: exchangeRate.ToSek(group.Sum(x => x.Proceeds < 0 ? -x.Proceeds - x.Fee : -x.Basis)),
