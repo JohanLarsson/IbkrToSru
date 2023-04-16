@@ -93,21 +93,30 @@ public static class Sru
             now = DateTime.Now;
         }
 
+        var page = 0;
         foreach (var chunk in items.Chunk(9))
         {
             builder.AppendLine($"#BLANKETT K4-{year}P4");
             builder.AppendLine($"#IDENTITET {personNumber.Replace("-", string.Empty)} {now.ToString("yyyyMMdd HHmmss")}");
+            var n = 0;
             foreach (var item in chunk)
             {
-                builder.AppendLine($"#UPPGIFT 3100 {item.Quantity}");
-                builder.AppendLine($"#UPPGIFT 3101 {item.Symbol}");
-                builder.AppendLine($"#UPPGIFT 3102 {item.Proceeds}");
-                builder.AppendLine($"#UPPGIFT 3103 {item.Basis}");
-                builder.AppendLine($"#UPPGIFT 3104 {item.Win}");
-                builder.AppendLine($"#UPPGIFT 3105 {item.Loss}");
+                builder.AppendLine($"#UPPGIFT 31{n}0 {item.Quantity}");
+                builder.AppendLine($"#UPPGIFT 31{n}1 {item.Symbol}");
+                builder.AppendLine($"#UPPGIFT 31{n}2 {item.Proceeds}");
+                builder.AppendLine($"#UPPGIFT 31{n}3 {item.Basis}");
+                builder.AppendLine($"#UPPGIFT 31{n}4 {item.Win}");
+                builder.AppendLine($"#UPPGIFT 31{n}5 {item.Loss}");
+                n++;
             }
 
+            builder.AppendLine($"#UPPGIFT 3300 {chunk.Sum(x => x.Proceeds)}");
+            builder.AppendLine($"#UPPGIFT 3301 {chunk.Sum(x => x.Basis)}");
+            builder.AppendLine($"#UPPGIFT 3304 {chunk.Sum(x => x.Win)}");
+            builder.AppendLine($"#UPPGIFT 3305 {chunk.Sum(x => x.Loss)}");
+            builder.AppendLine($"#UPPGIFT 7014 {page}");
             builder.AppendLine("#BLANKETTSLUT");
+            page++;
         }
 
         builder.AppendLine("#FIL_SLUT");
