@@ -93,16 +93,20 @@ public static class Sru
             now = DateTime.Now;
         }
 
-        foreach (var item in items)
+        foreach (var chunk in items.Chunk(9))
         {
             builder.AppendLine($"#BLANKETT K4-{year}P4");
             builder.AppendLine($"#IDENTITET {personNumber.Replace("-", string.Empty)} {now.ToString("yyyyMMdd HHmmss")}");
-            builder.AppendLine($"#UPPGIFT 3100 {item.Quantity}");
-            builder.AppendLine($"#UPPGIFT 3101 {item.Symbol}");
-            builder.AppendLine($"#UPPGIFT 3102 {item.Proceeds}");
-            builder.AppendLine($"#UPPGIFT 3103 {item.Basis}");
-            builder.AppendLine($"#UPPGIFT 3104 {item.Win}");
-            builder.AppendLine($"#UPPGIFT 3105 {item.Loss}");
+            foreach (var item in chunk)
+            {
+                builder.AppendLine($"#UPPGIFT 3100 {item.Quantity}");
+                builder.AppendLine($"#UPPGIFT 3101 {item.Symbol}");
+                builder.AppendLine($"#UPPGIFT 3102 {item.Proceeds}");
+                builder.AppendLine($"#UPPGIFT 3103 {item.Basis}");
+                builder.AppendLine($"#UPPGIFT 3104 {item.Win}");
+                builder.AppendLine($"#UPPGIFT 3105 {item.Loss}");
+            }
+
             builder.AppendLine("#BLANKETTSLUT");
         }
 
