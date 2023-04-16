@@ -3,7 +3,7 @@
 using System;
 using System.Globalization;
 
-public record ExchangeRate(
+public readonly record struct ExchangeRate(
     string Currency,
     double Rate)
 {
@@ -12,7 +12,7 @@ public record ExchangeRate(
     public string ToSekText(double amount) => Math.Round(amount * this.Rate).ToString(CultureInfo.InvariantCulture);
 }
 
-public record Execution(
+public readonly record struct Execution(
     string Currency,
     string Symbol,
     DateTime Time,
@@ -23,7 +23,7 @@ public record Execution(
     double Basis,
     double Pnl);
 
-public record BuyOrSell(
+public readonly record struct BuyOrSell(
     string Currency,
     string Symbol,
     DateTime Time,
