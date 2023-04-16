@@ -7,7 +7,7 @@ public readonly record struct ExchangeRate(
     string Currency,
     double Rate)
 {
-    public double ToSek(double amount) => amount * this.Rate;
+    public int ToSek(double amount) => (int)Math.Round(amount * this.Rate);
 
     public string ToSekText(double amount) => Math.Round(amount * this.Rate).ToString(CultureInfo.InvariantCulture);
 }
@@ -29,3 +29,5 @@ public readonly record struct BuyOrSell(
     DateTime Time,
     int Quantity,
     double Price);
+
+public readonly record struct SruItem(double Quantity, string Symbol, int Proceeds, int Basis, int Win, int Loss);
