@@ -28,6 +28,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -53,13 +54,16 @@
 
                 <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ExchangeRate}" />
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="vinst" />
-                <TextBox Grid.Row="4" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Win, Mode=OneWay}" ToolTip="för in värde i fält 7.4 om du laddar upp .sru via filöverföringstjänsten"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="per symbol" ToolTip="gruppera per symbol" />
+                <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding GroupBySymbol}" />
 
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="förlust" />
-                <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Loss, Mode=OneWay}" ToolTip="för in värde i fält 8.3 om du laddar upp .sru via filöverföringstjänsten"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="vinst" />
+                <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Win, Mode=OneWay}" ToolTip="för in värde i fält 7.4 om du laddar upp .sru via filöverföringstjänsten"/>
 
-                <Button Grid.Row="6" Grid.Column="1" Content="spara" Click="OnSaveClick"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="förlust" />
+                <TextBox Grid.Row="6" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Loss, Mode=OneWay}" ToolTip="för in värde i fält 8.3 om du laddar upp .sru via filöverföringstjänsten"/>
+
+                <Button Grid.Row="7" Grid.Column="1" Content="spara" Click="OnSaveClick"/>
             </Grid>
             <StackPanel Grid.Row="1">
                 <StackPanel.Resources>

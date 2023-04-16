@@ -12,6 +12,7 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
     private string? csvFile;
     private string personNumber = "19790305-4524";
     private double exchangeRate = 10.1245;
+    private bool groupBySymbol;
     private int year = 2022;
     private ImmutableArray<Execution> executions;
 
@@ -52,6 +53,11 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             try
             {
+                if (this.groupBySymbol)
+                {
+                    return Sru.CreateMergedBySymbol(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
+                }
+
                 return Sru.Create(this.executions, this.year, new ExchangeRate("USD", this.exchangeRate), this.personNumber);
             }
             catch (Exception e)
@@ -99,6 +105,22 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
             }
 
             this.personNumber = value;
+            this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.SruText));
+        }
+    }
+
+    public bool GroupBySymbol
+    {
+        get => this.groupBySymbol;
+        set
+        {
+            if (value == this.groupBySymbol)
+            {
+                return;
+            }
+
+            this.groupBySymbol = value;
             this.OnPropertyChanged();
             this.OnPropertyChanged(nameof(this.SruText));
         }

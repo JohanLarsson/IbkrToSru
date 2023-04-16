@@ -88,4 +88,16 @@ public static class SruTest
             new DateTime(2022, 04, 26, 13, 30, 09));
         Assert.AreEqual(expected, actual);
     }
+
+    [TestCaseSource(nameof(Cases))]
+    public static void CreateMergedBySymbol(Execution[] executions, string expected)
+    {
+        var actual = Sru.CreateMergedBySymbol(
+            executions.ToImmutableArray(),
+            2021,
+            new ExchangeRate("USD", 8.5815),
+            "19790305-4524",
+            new DateTime(2022, 04, 26, 13, 30, 09));
+        Assert.AreEqual(expected, actual);
+    }
 }

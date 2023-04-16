@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 public static class Sru
@@ -39,6 +40,41 @@ public static class Sru
                         Win: execution.Pnl > 0 ? exchangeRate.ToSek(execution.Pnl) : 0,
                         Loss: execution.Pnl < 0 ? exchangeRate.ToSek(-execution.Pnl) : 0));
             }
+        }
+
+        return Create(items.ToImmutable(), year, personNumber, now);
+    }
+
+    public static string CreateMergedBySymbol(ImmutableArray<Execution> executions, int year, ExchangeRate exchangeRate, string personNumber, DateTime now = default)
+    {
+        if (executions.IsDefaultOrEmpty)
+        {
+            return string.Empty;
+        }
+
+        if (executions.Any(x => x.Currency != exchangeRate.Currency))
+        {
+            throw new NotSupportedException("Only supporting USD for now.");
+        }
+
+        if (now == default)
+        {
+            now = DateTime.Now;
+        }
+
+        var items = ImmutableArray.CreateBuilder<SruItem>();
+
+        foreach (var group in executions.Where(x => x.Pnl != 0 && x.Time.Year == year).GroupBy(x => x.Symbol))
+        {
+            var pnl = group.Sum(x => x.Pnl);
+            items.Add(
+                new SruItem(
+                    Quantity: (int)Math.Abs(group.Sum(x => x.Quantity)),
+                    Symbol: group.Key,
+                    Proceeds: exchangeRate.ToSek(group.Sum(x => x.Proceeds < 0 ? x.Basis : x.Proceeds + x.Fee)),
+                    Basis: exchangeRate.ToSek(group.Sum(x => x.Proceeds < 0 ? -x.Proceeds - x.Fee : -x.Basis)),
+                    Win: pnl > 0 ? exchangeRate.ToSek(pnl) : 0,
+                    Loss: pnl < 0 ? exchangeRate.ToSek(-pnl) : 0));
         }
 
         return Create(items.ToImmutable(), year, personNumber, now);
