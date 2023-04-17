@@ -1,6 +1,6 @@
 # IbkrToSru
 
-![github actions](https://github.com/JohanLarsson/IbkrToSru/actions/workflows/ci.yml/badge.svg)
+[![ci](https://github.com/JohanLarsson/IbkrToSru/actions/workflows/ci.yml/badge.svg)](https://github.com/JohanLarsson/IbkrToSru/actions/workflows/ci.yml)
 
 App for generating .sru files from IBKR csv
 
