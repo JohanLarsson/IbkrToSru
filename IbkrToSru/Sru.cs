@@ -93,7 +93,7 @@ public static class Sru
             now = DateTime.Now;
         }
 
-        var page = 0;
+        var page = 1;
         foreach (var chunk in items.Chunk(9))
         {
             builder.AppendLine($"#BLANKETT K4-{year}P4");
