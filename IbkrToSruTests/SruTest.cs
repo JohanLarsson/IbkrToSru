@@ -1,4 +1,5 @@
-﻿namespace IbkrToSruTests;
+﻿#pragma warning disable SA1201 // Elements should appear in the correct order
+namespace IbkrToSruTests;
 
 using System;
 using System.Collections.Immutable;
