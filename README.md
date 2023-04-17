@@ -1,4 +1,7 @@
 # IbkrToSru
+
+![github actions](https://github.com/JohanLarsson/IbkrToSru/actions/workflows/ci.yml/badge.svg)
+
 App for generating .sru files from IBKR csv
 
 1. Exportera activity report csv från [IBKR](https://www.interactivebrokers.co.uk/sso/Login?SERVICE=AM.LOGIN) Performance & Reports > Statements > Activity
