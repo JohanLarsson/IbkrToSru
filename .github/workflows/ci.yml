@@ -22,7 +22,7 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
-    - name: bui9ld
+    - name: build
       run: dotnet build
       
     - name: test
