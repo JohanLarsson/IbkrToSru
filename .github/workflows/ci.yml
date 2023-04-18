@@ -10,11 +10,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: setup
         uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 7.0.x
       - name: restore
         run: dotnet restore
       - name: build
         run: dotnet build --configuration Release --no-restore
       - name: test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --configuration Release --no-build 
