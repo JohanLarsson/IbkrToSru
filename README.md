@@ -10,7 +10,8 @@ App for generating .sru files from IBKR csv
 4. Ange genomsnittlig växelkurs för året från riksbanken https://www.riksbank.se/sv/statistik/sok-rantor--valutakurser/valutakurser-till-deklarationen/
 5. Ange personnummer
 6. Spara som BLANKETTER.sru
-7. Importera BLANKETTER.sru i [mina sidor](https://www.skatteverket.se/)
+7.a Importera BLANKETTER.sru i [mina sidor](https://www.skatteverket.se/)
+7.b Om du har fler än 300 affärer laddar du upp BLANKETTER.sru och INFO.sru via filöverföringstjänsten
 8. Kontrollera att uppgifterna stämmer
 
 ![image](https://user-images.githubusercontent.com/1640096/232188438-b461b158-8187-472b-b8f1-462429120f7d.png)
@@ -18,3 +19,20 @@ App for generating .sru files from IBKR csv
 Endast stöd för handel i USD som det är nu.
 
 ![image](https://user-images.githubusercontent.com/1640096/232244461-4c3233bc-1acb-493d-94e2-9e6369cb65cb.png)
+
+## INFO.sru
+
+```
+#DATABESKRIVNING_START
+#PRODUKT SRU
+#FILNAMN BLANKETTER.SRU
+#DATABESKRIVNING_SLUT
+#MEDIELEV_START
+#ORGNR 198011128072
+#NAMN Johan Larsson
+#ADRESS Gatan 1
+#POSTNR 12345
+#POSTORT Staden
+#EMAIL johan@hotmale.com
+#MEDIELEV_SLUT
+```
