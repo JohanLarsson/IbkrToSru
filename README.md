@@ -2,8 +2,9 @@
 
 [![ci](https://github.com/JohanLarsson/IbkrToSru/actions/workflows/ci.yml/badge.svg)](https://github.com/JohanLarsson/IbkrToSru/actions/workflows/ci.yml)
 
-App for generating .sru files from IBKR csv
+App för att generera .sru-filer frpn IBKR csv. Sru filerna kan sen importeras i skatteverkets mina sidor.
 
+0. Om du är programmerare bygger du från kod, annars kan du ladda hem .exe [här](https://github.com/JohanLarsson/IbkrToSru/releases)
 1. Exportera activity report csv från [IBKR](https://www.interactivebrokers.co.uk/sso/Login?SERVICE=AM.LOGIN) Performance & Reports > Statements > Activity
 2. Läs in csv genom att klicka på ...
 3. Ange år
