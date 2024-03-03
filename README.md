@@ -15,7 +15,7 @@ App för att generera .sru-filer frpn IBKR csv. Sru filerna kan sen importeras i
 7.b Om du har fler än 300 affärer laddar du upp BLANKETTER.sru och INFO.sru via filöverföringstjänsten
 8. Kontrollera att uppgifterna stämmer
 
-![image](https://user-images.githubusercontent.com/1640096/232188438-b461b158-8187-472b-b8f1-462429120f7d.png)
+![image](https://github.com/JohanLarsson/IbkrToSru/assets/1640096/2d396d33-a5bc-4b95-ab5b-7e7da5b80e2c)
 
 Endast stöd för handel i USD som det är nu.
 
