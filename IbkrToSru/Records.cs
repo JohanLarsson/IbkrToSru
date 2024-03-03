@@ -9,7 +9,7 @@ public readonly record struct ExchangeRate(
 {
     public int ToSek(double amount) => (int)Math.Round(amount * this.Rate);
 
-    public string ToSekText(double amount) => Math.Round(amount * this.Rate).ToString(CultureInfo.InvariantCulture);
+    public string ToSekText(double amount) => Math.Ceiling(amount * this.Rate).ToString(CultureInfo.InvariantCulture);
 }
 
 public readonly record struct Execution(
