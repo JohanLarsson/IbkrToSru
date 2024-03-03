@@ -13,14 +13,14 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
     private string personNumber = "19790305-4524";
     private double exchangeRate = 10.6128;
     private bool groupBySymbol;
-    private int year = 2022;
+    private int year = DateTime.Today.Year - 1;
     private ImmutableArray<Execution> executions;
 
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
 
-    public double? Net => this.executions.IsDefaultOrEmpty
-        ? null
-        : this.executions.Sum(x => x.Pnl);
+    public string Net => this.executions.IsDefaultOrEmpty
+        ? string.Empty
+        : new ExchangeRate("USD", this.exchangeRate).ToSekText(this.executions.Sum(x => x.Pnl));
 
     public string WinSum => this.executions.IsDefaultOrEmpty
         ? string.Empty
@@ -148,6 +148,7 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.exchangeRate = value;
             this.OnPropertyChanged();
+            this.OnPropertyChanged(nameof(this.Net));
             this.OnPropertyChanged(nameof(this.WinSum));
             this.OnPropertyChanged(nameof(this.LossSum));
             this.OnPropertyChanged(nameof(this.SruText));

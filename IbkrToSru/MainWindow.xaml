@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IbkrToSru"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="600">
+        Title="IBKR to SRU" Height="450" Width="600">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -29,6 +29,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -40,7 +41,7 @@
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CsvFile}" />
                 <Button Grid.Row="0" Grid.Column="2" Content="..." Click="OnOpenClick" />
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="year" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="år" />
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Year}" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="personnummer" />
@@ -57,13 +58,16 @@
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="per symbol" ToolTip="gruppera per symbol" />
                 <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding GroupBySymbol}" />
 
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="vinst" />
-                <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding WinSum, Mode=OneWay}" ToolTip="för in värde i fält 7.4 om du laddar upp .sru via filöverföringstjänsten"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="netto" />
+                <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Net, Mode=OneWay}" ToolTip="din vinst eller förlust för året"/>
 
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="förlust" />
-                <TextBox Grid.Row="6" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding LossSum, Mode=OneWay}" ToolTip="för in värde i fält 8.3 om du laddar upp .sru via filöverföringstjänsten"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="summa vinst" />
+                <TextBox Grid.Row="6" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding WinSum, Mode=OneWay}" ToolTip="för in värde i fält 7.4 om du laddar upp .sru via filöverföringstjänsten"/>
 
-                <Button Grid.Row="7" Grid.Column="1" Content="spara" Click="OnSaveClick"/>
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="summa förlust" />
+                <TextBox Grid.Row="7" Grid.Column="1" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding LossSum, Mode=OneWay}" ToolTip="för in värde i fält 8.3 om du laddar upp .sru via filöverföringstjänsten"/>
+
+                <Button Grid.Row="8" Grid.Column="1" Content="spara" Click="OnSaveClick"/>
             </Grid>
             <StackPanel Grid.Row="1">
                 <StackPanel.Resources>
@@ -72,11 +76,21 @@
                     </Style>
                 </StackPanel.Resources>
                 <TextBlock Text="1. exportera activity report csv från IBKR Performance and Reports > Statements > Activity" />
-                <TextBlock Text="2. läs in med ..." />
-                <TextBlock Text="3. ange personnummer och växelkurs" />
-                <TextBlock Text="4. spara" />
+                <TextBlock Text="2. ange år" />
+                <TextBlock Text="3. ange personnummer" />
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="5.a färre än 300 rader kan importeras i " />
+                    <TextBlock Text="4. ange växelkurs, du hittar den " />
+                    <TextBlock>           
+                        <Hyperlink NavigateUri="https://www.riksbank.se/sv/statistik/sok-rantor--valutakurser/valutakurser-till-deklarationen/" RequestNavigate="OnRequestNavigate">
+                            här
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+
+                <TextBlock Text="5. läs in med ..." />
+                <TextBlock Text="6. spara" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="7.a färre än 300 rader kan importeras i " />
                     <TextBlock>           
                         <Hyperlink NavigateUri="https://www.skatteverket.se/" RequestNavigate="OnRequestNavigate">
                             mina sidor
@@ -84,7 +98,7 @@
                     </TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="5.b fler än 300 rader kan laddas upp i " />
+                    <TextBlock Text="7.b fler än 300 rader kan laddas upp i " />
                     <TextBlock>           
                         <Hyperlink NavigateUri="https://sso.skatteverket.se/fv_ext/fv_web/systemval.do" RequestNavigate="OnRequestNavigate">
                             filöverföringstjänsten
@@ -92,7 +106,7 @@
                     </TextBlock>
                 </StackPanel>
 
-                <TextBlock Text="Om du laddar upp via filöverföringstjänsten ska du ange vinst/förlust i fält 7.4 8.3" />
+                <TextBlock Text="Om du laddar upp via filöverföringstjänsten ska du ange summa vinst och förlust i fält 7.4 och 8.3" />
             </StackPanel>
         </Grid>
 
