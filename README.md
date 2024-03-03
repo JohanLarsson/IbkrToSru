@@ -19,6 +19,8 @@ App för att generera .sru-filer frpn IBKR csv. Sru filerna kan sen importeras i
 
 Endast stöd för handel i USD som det är nu.
 
+## IBKR Activity report
+
 ![image](https://user-images.githubusercontent.com/1640096/232244461-4c3233bc-1acb-493d-94e2-9e6369cb65cb.png)
 
 ## INFO.sru
