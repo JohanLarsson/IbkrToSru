@@ -19,7 +19,7 @@ App för att generera .sru-filer frpn IBKR csv. Sru filerna kan sen importeras i
 
 Endast stöd för handel i USD som det är nu.
 
-## IBKR Activity report
+## IBKR Activity Report
 
 För att ladda hem .csv-filen som används av IbkrToSru
 1. Loggar in på [ditt konto](https://www.interactivebrokers.co.uk/en/home.php)
