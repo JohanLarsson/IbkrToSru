@@ -21,6 +21,12 @@ Endast stöd för handel i USD som det är nu.
 
 ## IBKR Activity report
 
+För att ladda hem .csv-filen som används av IbkrToSru
+1. Loggar in på [ditt konto](https://www.interactivebrokers.co.uk/en/home.php)
+2. Klicka `Performance & Report`
+3. KLicka på `Statements`
+4. Ladda hem csv för aktuellt år
+
 ![image](https://user-images.githubusercontent.com/1640096/232244461-4c3233bc-1acb-493d-94e2-9e6369cb65cb.png)
 
 ## INFO.sru
