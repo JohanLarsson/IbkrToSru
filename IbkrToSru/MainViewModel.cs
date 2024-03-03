@@ -22,19 +22,13 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
         ? null
         : this.executions.Sum(x => x.Pnl);
 
-    public string Win => this.Net switch
-    {
-        > 0 and var win => new ExchangeRate("USD", this.exchangeRate).ToSekText(win),
-        <= 0 => "0",
-        _ => string.Empty,
-    };
+    public string WinSum => this.executions.IsDefaultOrEmpty
+        ? string.Empty
+        : new ExchangeRate("USD", this.exchangeRate).ToSekText(this.executions.Sum(x => Math.Max(x.Pnl, 0)));
 
-    public string? Loss => this.Net switch
-    {
-        < 0 and var win => new ExchangeRate("USD", this.exchangeRate).ToSekText(-win),
-        > 0 => "0",
-        _ => string.Empty,
-    };
+    public string LossSum => this.executions.IsDefaultOrEmpty
+        ? string.Empty
+        : new ExchangeRate("USD", this.exchangeRate).ToSekText(this.executions.Sum(x => Math.Min(x.Pnl, 0)));
 
     public string SruText
     {
@@ -154,8 +148,8 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
             this.exchangeRate = value;
             this.OnPropertyChanged();
-            this.OnPropertyChanged(nameof(this.Win));
-            this.OnPropertyChanged(nameof(this.Loss));
+            this.OnPropertyChanged(nameof(this.WinSum));
+            this.OnPropertyChanged(nameof(this.LossSum));
             this.OnPropertyChanged(nameof(this.SruText));
         }
     }
@@ -173,8 +167,8 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
             this.executions = value;
             this.OnPropertyChanged();
             this.OnPropertyChanged(nameof(this.Net));
-            this.OnPropertyChanged(nameof(this.Win));
-            this.OnPropertyChanged(nameof(this.Loss));
+            this.OnPropertyChanged(nameof(this.WinSum));
+            this.OnPropertyChanged(nameof(this.LossSum));
             this.OnPropertyChanged(nameof(this.SruText));
         }
     }
