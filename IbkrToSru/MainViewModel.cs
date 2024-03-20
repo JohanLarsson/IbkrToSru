@@ -28,7 +28,7 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
 
     public string LossSum => this.executions.IsDefaultOrEmpty
         ? string.Empty
-        : new ExchangeRate("USD", this.exchangeRate).ToSekText(this.executions.Sum(x => Math.Min(x.Pnl, 0)));
+        : new ExchangeRate("USD", this.exchangeRate).ToSekText(-this.executions.Sum(x => Math.Min(x.Pnl, 0)));
 
     public string SruText
     {
