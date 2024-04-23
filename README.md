@@ -33,6 +33,8 @@ För att ladda hem .csv-filen som används av IbkrToSru
 
 ## INFO.sru
 
+Skapa en fil med namn `INFO.sru` i notepad, den ska ha följande innehåll.
+
 ```
 #DATABESKRIVNING_START
 #PRODUKT SRU
