@@ -78,11 +78,11 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
                 this.Executions =
                     File.Exists(value)
                         ? Csv.ReadIbkr(File.ReadAllText(value))
-                        : ImmutableArray<Execution>.Empty;
+                        : [];
             }
             catch (Exception e)
             {
-                this.Executions = ImmutableArray<Execution>.Empty;
+                this.Executions = [];
                 MessageBox.Show("Error parsing csv." + Environment.NewLine + e.Message);
             }
         }

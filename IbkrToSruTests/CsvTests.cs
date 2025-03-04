@@ -9,7 +9,7 @@ using NUnit.Framework;
 public static class CsvTests
 {
     private static readonly TestCaseData[] Cases =
-    {
+    [
         new(
             "Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code\r\n" +
             "Trades,Data,Order,Stocks,USD,AMC,\"2021-11-23, 12:46:38\",50,39.83,39.16,-1991.5,-1,1992.5,0,-33.5,O\r\n" +
@@ -60,11 +60,11 @@ public static class CsvTests
             {
                 new Execution("USD", "AVGO", new DateTime(2021, 12, 10, 09, 36, 08), -10, 624.83, 6248.30, -1.03305633, -6247.26694367, 0),
                 new Execution("USD", "AVGO", new DateTime(2021, 12, 10, 09, 39, 30), 10, 632.37, -6323.7, -1, 6247.266944, -77.433055999999993d),
-            }),
-    };
+            })
+    ];
 
     private static readonly TestCaseData[] TradorvateCases =
-    {
+    [
         new(
             "Timestamp,B/S,Quantity,Price,Contract,Product,Product Description\r\n" +
             "2021-09-16 19:05, Sell,1,4449.00,ESZ1,ES,E-Mini S&P 500\r\n" +
@@ -73,8 +73,8 @@ public static class CsvTests
             {
                 new BuyOrSell("USD", "ESZ1", new DateTime(2021, 09, 16, 19, 05, 00), -1, 4449),
                 new BuyOrSell("USD", "ESZ1", new DateTime(2021, 09, 16, 19, 20, 00), 1, 4454),
-            }),
-    };
+            })
+    ];
 
     [TestCaseSource(nameof(Cases))]
     public static void ReadIbkr(string csv, Execution[] expected)

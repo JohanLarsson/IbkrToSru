@@ -2,7 +2,6 @@
 namespace IbkrToSruTests;
 
 using System;
-using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using IbkrToSru;
@@ -12,7 +11,7 @@ using NUnit.Framework;
 public static class SruTest
 {
     private static readonly TestCaseData[] CreateCases =
-    {
+    [
         new(
             new[]
             {
@@ -298,14 +297,14 @@ public static class SruTest
             #BLANKETTSLUT
             #FIL_SLUT
             
-            """),
-    };
+            """)
+    ];
 
     [TestCaseSource(nameof(CreateCases))]
     public static void Create(Execution[] executions, string expected)
     {
         var actual = Sru.Create(
-            executions.ToImmutableArray(),
+            [..executions],
             2021,
             new ExchangeRate("USD", 8.5815),
             "19790305-4524",
@@ -314,7 +313,7 @@ public static class SruTest
     }
 
     private static readonly TestCaseData[] CreateMergedBySymbolCases =
-    {
+    [
         new(
             new[]
             {
@@ -562,14 +561,14 @@ public static class SruTest
             #BLANKETTSLUT
             #FIL_SLUT
             
-            """),
-    };
+            """)
+    ];
 
     [TestCaseSource(nameof(CreateMergedBySymbolCases))]
     public static void CreateMergedBySymbol(Execution[] executions, string expected)
     {
         var actual = Sru.CreateMergedBySymbol(
-            executions.ToImmutableArray(),
+            [..executions],
             2021,
             new ExchangeRate("USD", 8.5815),
             "19790305-4524",
