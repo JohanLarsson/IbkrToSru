@@ -81,6 +81,17 @@ public static class CsvTests
             {
                 new Execution("USD", "SPY 06MAR25 615 C", new DateTime(2025, 02, 27, 15, 58, 29), 3, 0.04, -12, -0.59575, 12.59575, 0),
                 new Execution("USD", "SPY 06MAR25 615 C", new DateTime(2025, 03, 06, 16, 20, 00), -3, 0, 0, 0, -12.59575, -12.59575),
+            }),
+        new(
+            """
+            Trades,Data,Order,Equity and Index Options,USD,SPY 28MAR25 561 C,"2025-03-28, 10:43:02",-1,1.23,0,123,-1.5528594,-121.4471406,0,123,O
+            Trades,Data,Order,Equity and Index Options,USD,SPY 28MAR25 561 C,"2025-03-28, 16:20:00",1,0,0,0,0,121.447141,121.447141,0,C;Ep
+            Trades,SubTotal,,Equity and Index Options,USD,SPY 28MAR25 561 C,,0,,,123,-1.5528594,0.0000004,121.447141,123,
+            """,
+            new[]
+            {
+                new Execution("USD", "SPY 28MAR25 561 C", new DateTime(2025, 03, 28, 10, 43, 02), -1, 1.23, 123, -1.5528594, -121.4471406, 0),
+                new Execution("USD", "SPY 28MAR25 561 C", new DateTime(2025, 03, 28, 16, 20, 00), 1, 0, 0, 0, 121.447141, 121.447141),
             })
     ];
 

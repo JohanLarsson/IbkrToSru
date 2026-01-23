@@ -135,6 +135,30 @@ public static class SruTest
         new(
             new[]
             {
+                new Execution("USD", "SPY 28MAR25 561 C", new DateTime(2025, 03, 28, 10, 43, 02), -1, 1.23, 123, -1.5528594, -121.4471406, 0),
+                new Execution("USD", "SPY 28MAR25 561 C", new DateTime(2025, 03, 28, 16, 20, 00), 1, 0, 0, 0, 121.447141, 121.447141),
+            },
+            """
+            #BLANKETT K4-2025P4
+            #IDENTITET 197903054524 20260426 133009
+            #UPPGIFT 3100 1
+            #UPPGIFT 3101 SPY 28MAR25 561 C
+            #UPPGIFT 3102 1042
+            #UPPGIFT 3103 0
+            #UPPGIFT 3104 1042
+            #UPPGIFT 3105 0
+            #UPPGIFT 3300 1042
+            #UPPGIFT 3301 0
+            #UPPGIFT 3304 1042
+            #UPPGIFT 3305 0
+            #UPPGIFT 7014 1
+            #BLANKETTSLUT
+            #FIL_SLUT
+
+            """),
+        new(
+            new[]
+            {
                 new Execution("USD", "TRT", new DateTime(2021, 12, 10, 15, 14, 57), -329, 8.5, 2796.5, -2.52091315, -2865.9275, -71.948414),
                 new Execution("USD", "TTD", new DateTime(2021, 11, 30, 9, 31, 17), 18, 109.6, -1972.8, -1, 1973.8, 0),
                 new Execution("USD", "TTD", new DateTime(2021, 11, 30, 12, 6, 4), -18, 102.13, 1838.34, -1.011517534, -1973.8, -136.471518),
