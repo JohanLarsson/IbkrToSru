@@ -35,8 +35,8 @@ public static class Sru
                     new SruItem(
                         Quantity: (int)Math.Abs(execution.Quantity),
                         Symbol: execution.Symbol,
-                        Proceeds: exchangeRate.ToSek(execution.Proceeds < 0 ? execution.Basis : execution.Proceeds + execution.Fee),
-                        Basis: exchangeRate.ToSek(execution.Proceeds < 0 ? -execution.Proceeds - execution.Fee : -execution.Basis),
+                        Proceeds: exchangeRate.ToSek(execution.Basis < 0 ? execution.Proceeds + execution.Fee : execution.Basis),
+                        Basis: exchangeRate.ToSek(execution.Basis < 0 ? -execution.Basis : -execution.Proceeds - execution.Fee),
                         Win: execution.Pnl > 0 ? exchangeRate.ToSek(execution.Pnl) : 0,
                         Loss: execution.Pnl < 0 ? exchangeRate.ToSek(-execution.Pnl) : 0));
             }
