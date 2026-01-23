@@ -111,6 +111,30 @@ public static class SruTest
         new(
             new[]
             {
+                new Execution("USD", "SPY 06MAR25 615 C", new DateTime(2025, 02, 27, 15, 58, 29), 3, 0.04, -12, -0.59575, 12.59575, 0),
+                new Execution("USD", "SPY 06MAR25 615 C", new DateTime(2025, 03, 06, 16, 20, 00), -3, 0, 0, 0, -12.59575, -12.59575),
+            },
+            """
+            #BLANKETT K4-2025P4
+            #IDENTITET 197903054524 20260426 133009
+            #UPPGIFT 3100 3
+            #UPPGIFT 3101 SPY 06MAR25 615 C
+            #UPPGIFT 3102 0
+            #UPPGIFT 3103 108
+            #UPPGIFT 3104 0
+            #UPPGIFT 3105 108
+            #UPPGIFT 3300 0
+            #UPPGIFT 3301 108
+            #UPPGIFT 3304 0
+            #UPPGIFT 3305 108
+            #UPPGIFT 7014 1
+            #BLANKETTSLUT
+            #FIL_SLUT
+
+            """),
+        new(
+            new[]
+            {
                 new Execution("USD", "TRT", new DateTime(2021, 12, 10, 15, 14, 57), -329, 8.5, 2796.5, -2.52091315, -2865.9275, -71.948414),
                 new Execution("USD", "TTD", new DateTime(2021, 11, 30, 9, 31, 17), 18, 109.6, -1972.8, -1, 1973.8, 0),
                 new Execution("USD", "TTD", new DateTime(2021, 11, 30, 12, 6, 4), -18, 102.13, 1838.34, -1.011517534, -1973.8, -136.471518),
@@ -304,11 +328,11 @@ public static class SruTest
     public static void Create(Execution[] executions, string expected)
     {
         var actual = Sru.Create(
-            [..executions],
-            2021,
+            [.. executions],
+            executions[0].Time.Year,
             new ExchangeRate("USD", 8.5815),
             "19790305-4524",
-            new DateTime(2022, 04, 26, 13, 30, 09));
+            new DateTime(executions[0].Time.Year + 1, 04, 26, 13, 30, 09));
         Assert.AreEqual(expected, actual);
     }
 
@@ -568,7 +592,7 @@ public static class SruTest
     public static void CreateMergedBySymbol(Execution[] executions, string expected)
     {
         var actual = Sru.CreateMergedBySymbol(
-            [..executions],
+            [.. executions],
             2021,
             new ExchangeRate("USD", 8.5815),
             "19790305-4524",

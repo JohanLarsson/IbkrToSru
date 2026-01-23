@@ -10,50 +10,52 @@ public static class Csv
 {
     public static ImmutableArray<Execution> ReadIbkr(string csv)
     {
-        if (csv.Contains("Trades,Data,Order,Stocks,", StringComparison.Ordinal))
+        if (csv.Contains("Trades,Data,Order,Stocks,", StringComparison.Ordinal) ||
+            csv.Contains("Trades,Data,Order,Equity and Index Options,", StringComparison.Ordinal))
         {
             return ReadExecutions(csv, ',').ToImmutableArray();
         }
 
-        if (csv.Contains("Trades\tData\tOrder\tStocks\t", StringComparison.Ordinal))
+        if (csv.Contains("Trades\tData\tOrder\tStocks\t", StringComparison.Ordinal) ||
+            csv.Contains("Trades\tData\tOrder\tEquity and Index Options\t", StringComparison.Ordinal))
         {
             return ReadExecutions(csv, '\t').ToImmutableArray();
         }
 
         throw new FormatException("Expected comma or tab separated IBKR csv.");
 
-        static IEnumerable<Execution> ReadExecutions(string csv, char terminator)
+        static IEnumerable<Execution> ReadExecutions(string csv, char separator)
         {
             var position = 0;
             while (ReadLine(csv, out var line, ref position))
             {
-                if (TryRead(line, terminator) is { } execution)
+                if (TryRead(line, separator) is { } execution)
                 {
                     yield return execution;
                 }
             }
 
-            static Execution? TryRead(ReadOnlySpan<char> line, char terminator)
+            static Execution? TryRead(ReadOnlySpan<char> line, char separator)
             {
                 // Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
                 // Trades,Data,Order,Stocks,USD,APPS,\"2021-10-05, 10:46:40\",13,74.06,73.56,-962.78,-1,963.78,0,-6.5,O;P
                 var position = 0;
-                if (SkipKnown(line, "Trades", terminator, ref position) &&
-                    SkipKnown(line, "Data", terminator, ref position) &&
-                    SkipKnown(line, "Order", terminator, ref position) &&
-                    SkipKnown(line, "Stocks", terminator, ref position))
+                if (SkipKnown(line, "Trades", separator, ref position) &&
+                    SkipKnown(line, "Data", separator, ref position) &&
+                    SkipKnown(line, "Order", separator, ref position) &&
+                    (TrySkipKnown(line, "Stocks", separator, ref position) || TrySkipKnown(line, "Equity and Index Options", separator, ref position)))
                 {
-                    if (ReadString(line, terminator, out var currency, ref position) &&
-                        ReadString(line, terminator, out var symbol, ref position) &&
-                        ReadTime(line, terminator, out var time, ref position) &&
-                        ReadDouble(line, terminator, out var quantity, ref position) &&
-                        ReadDouble(line, terminator, out var price, ref position) &&
-                        ReadDouble(line, terminator, out _, ref position) &&
-                        ReadDouble(line, terminator, out var proceeds, ref position) &&
-                        ReadDouble(line, terminator, out var fee, ref position) &&
-                        ReadDouble(line, terminator, out var basis, ref position) &&
-                        ReadDouble(line, terminator, out var pnl, ref position) &&
-                        ReadString(line, terminator, out _, ref position))
+                    if (ReadString(line, separator, out var currency, ref position) &&
+                        ReadString(line, separator, out var symbol, ref position) &&
+                        ReadTime(line, separator, out var time, ref position) &&
+                        ReadDouble(line, separator, out var quantity, ref position) &&
+                        ReadDouble(line, separator, out var price, ref position) &&
+                        ReadDouble(line, separator, out _, ref position) &&
+                        ReadDouble(line, separator, out var proceeds, ref position) &&
+                        ReadDouble(line, separator, out var fee, ref position) &&
+                        ReadDouble(line, separator, out var basis, ref position) &&
+                        ReadDouble(line, separator, out var pnl, ref position) &&
+                        ReadString(line, separator, out _, ref position))
                     {
                         return new Execution(
                             Currency: currency,
@@ -84,30 +86,30 @@ public static class Csv
 
         throw new FormatException("Expected comma or tab separated Tradorvate csv.");
 
-        static IEnumerable<BuyOrSell> ReadExecutions(string csv, char terminator)
+        static IEnumerable<BuyOrSell> ReadExecutions(string csv, char separator)
         {
             var position = 0;
             while (ReadLine(csv, out var line, ref position))
             {
-                if (TryRead(line, terminator) is { } execution)
+                if (TryRead(line, separator) is { } execution)
                 {
                     yield return execution;
                 }
             }
 
-            static BuyOrSell? TryRead(ReadOnlySpan<char> line, char terminator)
+            static BuyOrSell? TryRead(ReadOnlySpan<char> line, char separator)
             {
                 // Timestamp,B/S,Quantity,Price,Contract,Product,Product Description
                 // 2021-09-16 19:05, Sell,1,4449.00,ESZ1,ES,E-Mini S&P 500
                 var position = 0;
-                if (ReadTime(line, terminator, out var time, ref position))
+                if (ReadTime(line, separator, out var time, ref position))
                 {
-                    if (ReadString(line, terminator, out var action, ref position) &&
-                        ReadInt(line, terminator, out var quantity, ref position) &&
-                        ReadDouble(line, terminator, out var price, ref position) &&
-                        ReadString(line, terminator, out var symbol, ref position) &&
-                        ReadString(line, terminator, out _, ref position) &&
-                        ReadString(line, terminator, out _, ref position))
+                    if (ReadString(line, separator, out var action, ref position) &&
+                        ReadInt(line, separator, out var quantity, ref position) &&
+                        ReadDouble(line, separator, out var price, ref position) &&
+                        ReadString(line, separator, out var symbol, ref position) &&
+                        ReadString(line, separator, out _, ref position) &&
+                        ReadString(line, separator, out _, ref position))
                     {
                         return action switch
                         {
@@ -160,23 +162,35 @@ public static class Csv
         return true;
     }
 
-    private static bool ReadInt(ReadOnlySpan<char> csv, char terminator, out int result, ref int position) =>
-        int.TryParse(ValueSpan(csv, terminator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);
+    private static bool ReadInt(ReadOnlySpan<char> csv, char separator, out int result, ref int position) =>
+        int.TryParse(ValueSpan(csv, separator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);
 
-    private static bool ReadDouble(ReadOnlySpan<char> csv, char terminator, out double result, ref int position) =>
-        double.TryParse(ValueSpan(csv, terminator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);
+    private static bool ReadDouble(ReadOnlySpan<char> csv, char separator, out double result, ref int position) =>
+        double.TryParse(ValueSpan(csv, separator, ref position), NumberStyles.Number, CultureInfo.InvariantCulture, out result);
 
-    private static bool ReadString(ReadOnlySpan<char> csv, char terminator, [NotNullWhen(true)] out string? result, ref int position)
+    private static bool ReadString(ReadOnlySpan<char> csv, char separator, [NotNullWhen(true)] out string? result, ref int position)
     {
-        result = ValueSpan(csv, terminator, ref position).ToString();
+        result = ValueSpan(csv, separator, ref position).ToString();
         return true;
     }
 
-    private static bool ReadTime(ReadOnlySpan<char> csv, char terminator, out DateTime result, ref int position) =>
-        DateTime.TryParse(ValueSpan(csv, terminator, ref position), out result);
+    private static bool ReadTime(ReadOnlySpan<char> csv, char separator, out DateTime result, ref int position) =>
+        DateTime.TryParse(ValueSpan(csv, separator, ref position), out result);
 
-    private static bool SkipKnown(ReadOnlySpan<char> csv, string text, char terminator, ref int position) =>
-        ValueSpan(csv, terminator, ref position).Equals(text, StringComparison.Ordinal);
+    private static bool TrySkipKnown(ReadOnlySpan<char> csv, string text, char separator, ref int position)
+    {
+        var before = position;
+        if (SkipKnown(csv, text, separator, ref position))
+        {
+            return true;
+        }
+
+        position = before;
+        return false;
+    }
+
+    private static bool SkipKnown(ReadOnlySpan<char> csv, string text, char separator, ref int position) =>
+        ValueSpan(csv, separator, ref position).Equals(text, StringComparison.Ordinal);
 
     private static void Skip(ReadOnlySpan<char> csv, char c, ref int position)
     {
