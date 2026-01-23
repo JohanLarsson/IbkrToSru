@@ -11,9 +11,9 @@ public sealed class MainViewModel : System.ComponentModel.INotifyPropertyChanged
     private const string PlaceHolderPersonNumber = "19790305-4524";
     private string? csvFile;
     private string personNumber = "19790305-4524";
-    private double exchangeRate = 10.56137;
+    private double exchangeRate = 9.8191;
     private bool groupBySymbol;
-    private int year = 2024;
+    private int year = 2025;
     private ImmutableArray<Execution> executions;
 
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
